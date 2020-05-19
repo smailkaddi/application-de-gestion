@@ -21,14 +21,18 @@ footer {
   padding-top:40px;
   padding-bottom:40px;
   background-color:#cecece;
+  text-align: center;
  
 }
 
 
 #masthead {
-  min-height:199px;
+  min-height:400px;
   background-color:#000044;
   color:#aaaacc;
+  background-image: url(/static/images/banner.jpg);
+  background-position: center;
+  background-size: cover;
 }
 
 #masthead h1 {
@@ -82,7 +86,7 @@ a,a:hover {
 }
 
 .navbar-bright {
-  background-color:#111166;
+  background-color:#3E606F;
   color:#fff;
   margin-bottom: 0;
   border-width: 0;

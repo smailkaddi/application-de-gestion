@@ -1,55 +1,48 @@
+<?php 
+	session_start(); 
 
+	if (!isset($_SESSION['username'])) {
+		$_SESSION['msg'] = "You must log in first";
+		header('location: login.php');
+	}
 
-<?php
-session_start();
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database  ="login";
-// Create connection
-$conn = new mysqli($servername, $username, $password,$database);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-  
-}
-if(isset($_POST["resgister"])){
-  $username = mysqli_real_escape_string($conn, $_POST['username']);
-  $email = mysqli_real_escape_string($conn, $_POST['email']);
-  $password = mysqli_real_escape_string($conn, $_POST['password']);
-  $password2 = mysqli_real_escape_string($conn, $_POST['password2']);
-  session_start();
-  if($password = $password2 ){
-    $password = md5($password);
-    $sql = "INSERT INTO users (username, email, password) VALUES ('$username','$email','$password','$password2' )";
-    mysqli_query( $conn ,$sql);
-    $_SESSION ['message'] = "you are now logged in";
-    $_SESSION ['username'] = $username;
-    header('location:post.php');
-  }else{
-  $_SESSION ['message'] = "the tow passord to not match";
-  }
-}
+	if (isset($_GET['logout'])) {
+		session_destroy();
+		unset($_SESSION['username']);
+		header("location: login.php");
+	}
+
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href=style.css >
+	<title>Home</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<div class="login">
-  <div class="login-triangle"></div>
-  <h2 class="login-header">Log in</h2>
-  <form action='home.php' method="POST" class="login-container">
-    <p><input name ="username" type="text" placeholder="USER"></p>
-    <p><input  name ="Email" type="email" placeholder="email"></p>
-    <p><input  name ="password" type="password" placeholder="Password"></p>
-    <p><input  name ="password2" type="password" placeholder="Password"></p>
-    <p><input  name = "resgister"   type="submit"    value="Log in"></p>
-  </form>
-</div>
+	<div class="header">
+		<h2>Home Page</h2>
+	</div>
+	<div class="content">
+
+		<!-- notification message -->
+		<?php if (isset($_SESSION['success'])) : ?>
+			<div class="error success" >
+				<h3>
+					<?php 
+						echo $_SESSION['success']; 
+						unset($_SESSION['success']);
+					?>
+				</h3>
+			</div>
+		<?php endif ?>
+
+		<!-- logged in user information -->
+		<?php  if (isset($_SESSION['username'])) : ?>
+			<p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
+			<p> <a href="index.php?logout='1'" style="color: red;">logout</a> </p>
+		<?php endif ?>
+	</div>
+		
 </body>
 </html>
